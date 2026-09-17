@@ -38,6 +38,11 @@ a:hover{text-decoration:underline}
 .top-bar .logo span{color:var(--accent)}
 .top-bar .logo .badge{font-size:10px;background:var(--accent-dim);color:var(--accent);padding:2px 7px;border-radius:4px;font-weight:600;letter-spacing:.5px}
 .top-bar .logo .version-badge{font-size:9px;background:var(--accent);color:#fff;padding:2px 6px;border-radius:4px;font-weight:700;margin-left:4px}
+.topic-group-title.cases{color:var(--teal)}
+.step.case-item{border-left:3px solid var(--teal);padding-left:12px;margin-left:-12px;background:linear-gradient(90deg,var(--accent-glow) 0%,transparent 40%);border-radius:4px}
+.tag.tier{background:var(--blue);color:#fff}
+.tag.new{background:var(--teal);color:var(--bg-deep)}
+.tag.reframe{background:var(--purple);color:#fff}
 .progress-wrap{flex:1;max-width:480px;display:flex;align-items:center;gap:12px}
 .progress-bar-outer{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
 .progress-bar-inner{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:3px;transition:width .5s}
@@ -344,7 +349,7 @@ html[data-font="xl"]{--font-scale:1.2}
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box">
     <div class="login-logo">
-      <h1><span>CSCP</span> 8.0</h1>
+      <h1><span>CSCP</span> 5.0</h1>
       <p>Study Tracker — Sign in to continue</p>
     </div>
     <div class="login-error" id="loginError">Invalid email or password</div>
@@ -809,6 +814,65 @@ const allModules = [
   }
 ];
 
+// ========== CASE STUDIES (per CSCP Case Map — v11 workbook) ==========
+// Mapping source: "CSCP Case Map" sheet in cpim_cscp_examcases_v11.xlsx
+// Tier 1 (use as-is) + NEW (built for CSCP) + Cases 31/32 (post-v11).
+// Tier 3 cases (1, 2, 9, 14, 19, 22) are intentionally SKIPPED — CPIM-only depth.
+// Check semantics: one check = Read + Attempt + Debrief (pre-work + strategic debrief).
+const caseStudies = {
+  mod1: [
+    { id: 'cs10', title: 'Case 10 — Forecasting Methods (SMA/WMA/ES)', desc: 'Tier 1 · Use as-is. Compare quantitative methods; emphasize method selection rationale over pure calculation.', priority: 'high', terms: ['simple moving average', 'weighted moving average', 'exponential smoothing', 'alpha', 'responsiveness vs stability'] },
+    { id: 'cs07', title: 'Case 7 — Forecast Error Metrics', desc: 'Tier 1 · Use as-is. Judge forecast quality before trusting the plan — MAD, MAPE, tracking signal, bias detection.', priority: 'high', terms: ['MAD', 'MAPE', 'MSE', 'CFE', 'tracking signal', 'forecast bias'] },
+    { id: 'cs16', title: 'Case 16 — Seasonality & Indices', desc: 'Tier 1 · Use as-is. Seasonal indices and deseasonalized demand — how raw data becomes actionable forecast.', priority: 'high', terms: ['seasonal index', 'deseasonalization', 'seasonal forecast', 'demand patterns'] },
+    { id: 'cs13', title: 'Case 13 — S&OP Planning Grid (Level/Chase/Hybrid)', desc: 'Tier 1 · Use as-is. Best crossover case in the bank — group exercise: assign teams a strategy to defend.', priority: 'high', terms: ['S&OP', 'level strategy', 'chase strategy', 'hybrid strategy', 'workforce planning'] }
+  ],
+  mod2: [
+    { id: 'cs12', title: 'Case 12 — Financial KPIs', desc: 'Tier 1 · Use as-is. Cash-to-cash, DIO, DSO, DPO, current/quick/debt ratios — all in CSCP key terminology.', priority: 'high', terms: ['cash-to-cash cycle', 'DIO', 'DSO', 'DPO', 'current ratio', 'quick ratio', 'debt ratio', 'net profit margin'] },
+    { id: 'cs18', title: 'Case 18 — Facility Location (Center of Gravity)', desc: 'Tier 1 · Use as-is. Network design and facility location — add a qualitative factor discussion.', priority: 'high', terms: ['center of gravity', 'network design', 'facility location', 'total transportation cost'] }
+  ],
+  mod3: [
+    { id: 'cs27_iii', title: 'Case 27 — Supplier Scorecard (sourcing lens)', desc: 'NEW · Reference in Module III for supplier evaluation criteria; full debrief lives in Module VI.', priority: 'medium', terms: ['supplier evaluation', 'supplier scorecard', 'Kraljic tiering', 'sourcing strategy'] }
+  ],
+  mod4: [
+    { id: 'cs03', title: 'Case 3 — Inventory Costing (FIFO/LIFO/WA)', desc: 'Tier 1 · Use as-is. ECM sample Q4 matches this scenario — financial impact of costing method is testable.', priority: 'high', terms: ['FIFO', 'LIFO', 'weighted average', 'COGS', 'ending inventory valuation'] },
+    { id: 'cs04', title: 'Case 4 — EOQ Analysis', desc: 'Tier 1 · Use as-is. Constraint analysis + sensitivity is what makes this CSCP-worthy vs pure CPIM.', priority: 'high', terms: ['EOQ', 'total inventory cost', 'ordering vs carrying trade-off', 'constraints', 'sensitivity'] },
+    { id: 'cs05', title: 'Case 5 — Safety Stock', desc: 'Tier 1 · Use as-is. Emphasize the strategic trade-off: higher service = more inventory cost. That is the CSCP lens.', priority: 'high', terms: ['safety stock', 'service level', 'Z-factor', 'demand variability', 'lead time variability', 'reorder point'] },
+    { id: 'cs08', title: 'Case 8 — Inventory Metrics', desc: 'Tier 1 · Use as-is. Turns, days of supply, carrying cost — CSCP key terms. Use before Case 3 for logical sequence.', priority: 'high', terms: ['inventory turnover', 'days of supply', 'carrying cost', 'ABC classification', 'SKU analysis'] },
+    { id: 'cs31', title: 'Case 31 — ABC Analysis', desc: 'NEW · Pareto 80/20 applied to inventory. A ≤ 80% value, B ≤ 95%, C = rest. Prioritize control effort by class.', priority: 'high', terms: ['ABC classification', 'Pareto principle', 'annual dollar usage', 'inventory segmentation', 'control policy'] },
+    { id: 'cs11', title: 'Case 11 — Quality Metrics (OEE focus)', desc: 'Tier 2 · Reframe. Emphasize OEE and perfect order fulfillment. Skip Cpk drill — CSCP rarely tests at that depth.', priority: 'medium', terms: ['OEE', 'perfect order fulfillment', 'process capability (conceptual)', 'quality metrics'] },
+    { id: 'cs32', title: 'Case 32 — Pareto Analysis (Vital Few Defects)', desc: 'NEW · Focus improvement effort on the vital few causes driving 80% of defects. Continuous improvement lens.', priority: 'medium', terms: ['Pareto analysis', '80/20 principle', 'vital few', 'defect analysis', 'root cause prioritization'] },
+    { id: 'cs17', title: 'Case 17 — TOC / Constraints', desc: 'Tier 2 · Reframe. Position as supply chain bottleneck analysis — where is the constraint in the SC? Internal or market-driven?', priority: 'medium', terms: ['theory of constraints', 'bottleneck', 'throughput', 'constraint management'] },
+    { id: 'cs06', title: 'Case 6 — Capacity & Critical Ratio', desc: 'Tier 2 · Reframe. Use only the capacity calc portion; skip the CR dispatch priority exercise (CPIM-tactical).', priority: 'medium', terms: ['rated capacity', 'demonstrated capacity', 'utilization', 'efficiency'] },
+    { id: 'cs21', title: 'Case 21 — Kanban System Design', desc: 'Tier 2 · Reframe. Use as pull-system illustration, not a formula drill. Show the concept; skip kanban quantity formula.', priority: 'medium', terms: ['kanban', 'pull system', 'replenishment', 'lean principles'] },
+    { id: 'cs23', title: 'Case 23 — Periodic Review System', desc: 'Tier 2 · Reframe. Focus on continuous vs periodic comparison — when to use each. Skip detailed math.', priority: 'medium', terms: ['periodic review', 'continuous review', 'replenishment systems'] }
+  ],
+  mod5: [
+    { id: 'cs24', title: 'Case 24 — Transportation Mode Selection', desc: 'NEW · Built for CSCP. Total logistics cost across ocean/air/intermodal — modal trade-offs + in-transit inventory.', priority: 'high', terms: ['total logistics cost', 'transportation modes', 'in-transit inventory', 'modal trade-offs', '3PL'] },
+    { id: 'cs25', title: 'Case 25 — Incoterms® 2020 & Trade', desc: 'NEW · Built for CSCP. High exam relevance — students must know Incoterms cold. Use responsibility matrix as study aid.', priority: 'high', terms: ['EXW', 'FCA', 'CIF', 'DAP', 'DDP', 'risk transfer', 'landed cost', 'import duties', 'trade documentation'] },
+    { id: 'cs26', title: 'Case 26 — Reverse Logistics & Waste Hierarchy', desc: 'NEW · Built for CSCP. 5 disposition paths mapped to waste hierarchy. Connect to Module 8 sustainability.', priority: 'high', terms: ['reverse logistics', 'waste hierarchy', 'reduce/reuse/recycle/recover/dispose', 'returns management', 'disposition'] }
+  ],
+  mod6: [
+    { id: 'cs27', title: 'Case 27 — Supplier Performance Scorecard', desc: 'NEW · Built for CSCP. Weighted scorecard + Kraljic + relationship strategies. Core ECM VI.B content.', priority: 'high', terms: ['supplier scorecard', 'Kraljic matrix', 'strategic/leverage/bottleneck/routine', 'SRM'] },
+    { id: 'cs28', title: 'Case 28 — Customer Segmentation & CRM Metrics', desc: 'NEW · Built for CSCP. Module VI is 17% of exam — essential. Perfect order fulfillment definition is exam-critical.', priority: 'high', terms: ['customer segmentation', 'Pareto analysis', 'perfect order fulfillment', 'CLV', 'NPS', 'fill rate', 'on-time delivery', 'CRM'] },
+    { id: 'cs30', title: 'Case 30 — Supplier Development & CPFR ROI', desc: 'NEW · Optional depth — VI already covered via 27/28. Adds invest-to-improve economics + CPFR value case.', priority: 'medium', terms: ['supplier development ROI', 'CPFR', 'collaborative planning', 'cost of poor quality'] }
+  ],
+  mod7: [
+    { id: 'cs20', title: 'Case 20 — Risk Rating & PERT', desc: 'Tier 1 · Use as-is. Risk rating (P×I) is core CSCP. Reframe PERT as supply-chain improvement project, not generic PM.', priority: 'high', terms: ['risk rating', 'probability', 'impact', 'PERT estimate', 'variance', 'risk prioritization'] }
+  ],
+  mod8: [
+    { id: 'cs15', title: 'Case 15 — Financial Analysis (ROI/Payback)', desc: 'Tier 1 · Use as-is. Investment analysis supports the "optimize" domain. Pair with Case 29 for financial + green together.', priority: 'high', terms: ['ROI', 'payback period', 'benefit-cost ratio', 'profitability index', 'EPS'] },
+    { id: 'cs29', title: 'Case 29 — Sustainability & Triple Bottom Line', desc: 'NEW · Built for CSCP. TBL, Scope 1/2/3, green initiative ROI, UN Global Compact, GRI. Pair with Case 15.', priority: 'high', terms: ['triple bottom line', 'Scope 1/2/3 emissions', 'UN Global Compact', 'GRI Standards', 'SA8000', 'carbon credits'] }
+  ]
+};
+
+// Inject case studies as the FIRST topic group in each module (pre-work belongs upfront)
+allModules.forEach(mod => {
+  const cases = caseStudies[mod.id];
+  if (cases && cases.length) {
+    mod.topics.unshift({ group: '📋 Case Studies (Pre-work · Read + Attempt + Debrief)', items: cases, isCases: true });
+  }
+});
+
 // Practice modules (always at end)
 const practiceModules = [
   {
@@ -1111,14 +1175,16 @@ function renderMain() {
         </div><div class="module-body">`;
       
       mod.topics.forEach(topic => {
-        html += `<div class="topic-group"><div class="topic-group-title">${topic.group}</div>`;
+        const isCases = !!topic.isCases;
+        html += `<div class="topic-group"><div class="topic-group-title${isCases ? ' cases' : ''}">${topic.group}</div>`;
         topic.items.forEach(item => {
           const checked = isChecked(item.id), noteText = getNote(item.id), noteExists = !!noteText, noteOpen = openNotes.has(item.id);
           const escapedNote = (noteText || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
           let tag = item.priority === 'high' ? '<span class="tag high">HIGH</span>' : item.priority === 'medium' ? '<span class="tag medium">MEDIUM</span>' : item.priority === 'formula' ? '<span class="tag formula">FORMULA</span>' : '';
-          let termsHtml = item.terms?.length ? `<div class="key-terms"><div class="key-terms-label">Key Terms</div><div class="key-terms-list">${item.terms.map(t => `<span class="term">${t}</span>`).join('')}</div></div>` : '';
+          const keyTermsLabel = isCases ? 'CSCP Concepts Tested' : 'Key Terms';
+          let termsHtml = item.terms?.length ? `<div class="key-terms"><div class="key-terms-label">${keyTermsLabel}</div><div class="key-terms-list">${item.terms.map(t => `<span class="term">${t}</span>`).join('')}</div></div>` : '';
           
-          html += `<div class="step"><div class="step-check ${checked ? 'checked' : ''} ${noteExists ? 'has-note' : ''}" onclick="toggleCheck('${item.id}')">✓</div>
+          html += `<div class="step${isCases ? ' case-item' : ''}"><div class="step-check ${checked ? 'checked' : ''} ${noteExists ? 'has-note' : ''}" onclick="toggleCheck('${item.id}')">✓</div>
             <div class="step-content ${checked ? 'checked-text' : ''}">
               <div class="step-header"><div class="step-title">${item.title}${tag}</div>
                 <button class="note-btn ${noteExists ? 'has-note' : ''} ${noteOpen ? 'open' : ''}" id="note_btn_${item.id}" onclick="toggleNote('${item.id}')">${noteExists ? '📝 Note' : '📝'}</button></div>
