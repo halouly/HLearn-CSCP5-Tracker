@@ -43,6 +43,8 @@ a:hover{text-decoration:underline}
 .tag.tier{background:var(--blue);color:#fff}
 .tag.new{background:var(--teal);color:var(--bg-deep)}
 .tag.reframe{background:var(--purple);color:#fff}
+.worksheet-btn{background:none;border:1px solid var(--teal);color:var(--teal);font-size:12px;padding:2px 8px;border-radius:5px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;flex-shrink:0;text-decoration:none;font-weight:500}
+.worksheet-btn:hover{background:var(--accent-glow);text-decoration:none}
 .progress-wrap{flex:1;max-width:480px;display:flex;align-items:center;gap:12px}
 .progress-bar-outer{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
 .progress-bar-inner{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:3px;transition:width .5s}
@@ -873,6 +875,48 @@ allModules.forEach(mod => {
   }
 });
 
+// ========== CASE WORKSHEET FILE MAP ==========
+// Files live at the repo root alongside index.html — relative link resolves on GitHub Pages, Netlify, or local.
+// Key = case number (int). Any tracker item ID like cs07 / cs07_r / cs27_iii maps to the same file.
+const CASE_WORKSHEETS = {
+  1: 'Case01_MRP_Multi_Level_worksheet.xlsx',
+  2: 'Case02_ATP_Methods_worksheet.xlsx',
+  3: 'Case03_Inventory_Costing_worksheet.xlsx',
+  4: 'Case04_EOQ_Analysis_worksheet.xlsx',
+  5: 'Case05_Safety_Stock_worksheet.xlsx',
+  6: 'Case06_Capacity_CR_worksheet.xlsx',
+  7: 'Case07_Forecast_Error_worksheet.xlsx',
+  8: 'Case08_Inventory_Metrics_worksheet.xlsx',
+  9: 'Case09_Lean_Scheduling_worksheet.xlsx',
+  10: 'Case10_Forecast_Methods_worksheet.xlsx',
+  11: 'Case11_Quality_Metrics_worksheet.xlsx',
+  12: 'Case12_Financial_KPIs_worksheet.xlsx',
+  13: 'Case13_S_OP_Planning_Grid_worksheet.xlsx',
+  14: 'Case14_RCCP_Load_worksheet.xlsx',
+  15: 'Case15_Financial_Analysis_worksheet.xlsx',
+  16: 'Case16_Seasonality_worksheet.xlsx',
+  17: 'Case17_TOC_Constraints_worksheet.xlsx',
+  18: 'Case18_Location_Analysis_worksheet.xlsx',
+  19: 'Case19_BOM_Explosion_worksheet.xlsx',
+  20: 'Case20_Risk_PERT_worksheet.xlsx',
+  21: 'Case21_Kanban_worksheet.xlsx',
+  22: 'Case22_Lead_Time_worksheet.xlsx',
+  23: 'Case23_Periodic_Review_worksheet.xlsx',
+  24: 'Case24_Transport_Mode_worksheet.xlsx',
+  25: 'Case25_Incoterms_Trade_worksheet.xlsx',
+  26: 'Case26_Reverse_Logistics_worksheet.xlsx',
+  27: 'Case27_Supplier_Scorecard_worksheet.xlsx',
+  28: 'Case28_CRM_Metrics_worksheet.xlsx',
+  29: 'Case29_Sustainability_TBL_worksheet.xlsx',
+  30: 'Case30_Supplier_Dev_CPFR_worksheet.xlsx',
+  31: 'Case31_ABC_Analysis_worksheet.xlsx',
+  32: 'Case32_Pareto_Analysis_worksheet.xlsx'
+};
+function getCaseWorksheet(itemId) {
+  const m = /^cs0*(\d+)/.exec(itemId);
+  return m ? CASE_WORKSHEETS[parseInt(m[1], 10)] || null : null;
+}
+
 // Practice modules (always at end)
 const practiceModules = [
   {
@@ -885,7 +929,29 @@ const practiceModules = [
         { id: 'p4', title: 'Module VII-VIII Review', desc: 'Risk management, optimization, sustainability, technology', terms: [] },
         { id: 'p5', title: 'Full practice exam', desc: 'Timed 150-question simulation', priority: 'high', terms: [] },
         { id: 'p6', title: 'Gap analysis', desc: 'Review weak areas based on practice results', priority: 'high', terms: [] }
-      ]}
+      ]},
+      { group: '📋 Case Re-attempts · Modules I-II (Demand + Network)', items: [
+        { id: 'cs13_r', title: 'Case 13 — S&OP Planning Grid (re-attempt)', desc: 'Highest-value CSCP case. Re-attempt without notes; defend level vs chase vs hybrid choice in 3 sentences.', priority: 'high', terms: ['level', 'chase', 'hybrid', 'S&OP', 'strategy rationale'] },
+        { id: 'cs07_r', title: 'Case 7 — Forecast Error (re-attempt)', desc: 'Interpret tracking signal & bias — do NOT re-derive MAD/MAPE. Ask: what would you tell the S&OP team?', priority: 'high', terms: ['tracking signal', 'bias', 'interpretation', 'action'] },
+        { id: 'cs12_r', title: 'Case 12 — Financial KPIs (re-attempt)', desc: 'Re-read cash-to-cash + DIO/DSO/DPO scenario. Focus: which lever moves C2C fastest, and cross-functional cost.', priority: 'high', terms: ['C2C', 'DIO', 'DSO', 'DPO', 'lever selection'] }
+      ], isCases: true },
+      { group: '📋 Case Re-attempts · Modules III-IV (Source + Ops/Inventory)', items: [
+        { id: 'cs08_r', title: 'Case 8 — Inventory Metrics (re-attempt)', desc: 'Turns, DOS, carrying cost — CSCP key terms. Speed check: interpret without recomputing.', priority: 'high', terms: ['inventory turnover', 'days of supply', 'carrying cost'] },
+        { id: 'cs03_r', title: 'Case 3 — Inventory Costing (re-attempt)', desc: 'ECM sample Q4 scenario. Focus: financial statement impact of FIFO vs LIFO in inflation.', priority: 'high', terms: ['FIFO', 'LIFO', 'COGS impact', 'inflation'] },
+        { id: 'cs05_r', title: 'Case 5 — Safety Stock (re-attempt)', desc: 'Frame as service-level vs inventory-cost trade-off. Skip the Z-lookup drill.', priority: 'high', terms: ['service level trade-off', 'safety stock strategy'] },
+        { id: 'cs31_r', title: 'Case 31 — ABC Analysis (re-attempt)', desc: 'Apply Pareto to inventory control policy. Which SKUs get cycle-counted weekly?', priority: 'medium', terms: ['ABC classification', 'differentiated control'] }
+      ], isCases: true },
+      { group: '📋 Case Re-attempts · Modules V-VI (Logistics + Relationships — high-weight)', items: [
+        { id: 'cs25_r', title: 'Case 25 — Incoterms (re-attempt)', desc: 'One of the most-tested CSCP topics. Drill the responsibility matrix cold: cost transfer vs risk transfer.', priority: 'high', terms: ['EXW', 'FCA', 'CIF', 'DAP', 'DDP', 'risk transfer point'] },
+        { id: 'cs24_r', title: 'Case 24 — Transport Mode (re-attempt)', desc: 'Total logistics cost = freight + in-transit inventory + service. Do NOT pick on freight rate alone.', priority: 'high', terms: ['total logistics cost', 'in-transit inventory', 'modal trade-off'] },
+        { id: 'cs27_r', title: 'Case 27 — Supplier Scorecard (re-attempt)', desc: 'Weight the KPIs before scoring. Map winner to Kraljic quadrant → relationship strategy.', priority: 'high', terms: ['weighted scorecard', 'Kraljic', 'SRM strategy'] },
+        { id: 'cs28_r', title: 'Case 28 — CRM Metrics (re-attempt)', desc: 'Perfect order fulfillment definition = exam-critical. Segment customers by CLV, not revenue.', priority: 'high', terms: ['perfect order fulfillment', 'CLV', 'customer segmentation'] }
+      ], isCases: true },
+      { group: '📋 Case Re-attempts · Modules VII-VIII (Risk + Optimize/Sustainability)', items: [
+        { id: 'cs20_r', title: 'Case 20 — Risk & PERT (re-attempt)', desc: 'Risk rating = P × I → prioritize response (avoid/reduce/transfer/accept). PERT frames as SC improvement project.', priority: 'high', terms: ['risk rating', 'P×I', 'response strategy', 'PERT'] },
+        { id: 'cs29_r', title: 'Case 29 — Sustainability TBL (re-attempt)', desc: 'Scope 1/2/3 definitions cold. UN Global Compact, GRI, SA8000 — know what each covers.', priority: 'high', terms: ['triple bottom line', 'Scope 1/2/3', 'GRI', 'UN Global Compact', 'SA8000'] },
+        { id: 'cs15_r', title: 'Case 15 — Financial Analysis (re-attempt)', desc: 'ROI + payback for SC investment decisions. When does payback mislead vs ROI?', priority: 'medium', terms: ['ROI', 'payback', 'investment decision'] }
+      ], isCases: true }
     ]
   }
 ];
@@ -1187,6 +1253,7 @@ function renderMain() {
           html += `<div class="step${isCases ? ' case-item' : ''}"><div class="step-check ${checked ? 'checked' : ''} ${noteExists ? 'has-note' : ''}" onclick="toggleCheck('${item.id}')">✓</div>
             <div class="step-content ${checked ? 'checked-text' : ''}">
               <div class="step-header"><div class="step-title">${item.title}${tag}</div>
+                ${isCases && getCaseWorksheet(item.id) ? `<a class="worksheet-btn" href="${getCaseWorksheet(item.id)}" target="_blank" rel="noopener" title="Download worksheet">📎 Worksheet</a>` : ''}
                 <button class="note-btn ${noteExists ? 'has-note' : ''} ${noteOpen ? 'open' : ''}" id="note_btn_${item.id}" onclick="toggleNote('${item.id}')">${noteExists ? '📝 Note' : '📝'}</button></div>
               <div class="note-area ${noteOpen ? 'open' : ''}" id="note_area_${item.id}">
                 <textarea id="note_ta_${item.id}" placeholder="Add your notes here…" oninput="saveNote('${item.id}')">${escapedNote}</textarea>
